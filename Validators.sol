@@ -420,7 +420,7 @@ contract Validators is Params {
             "Staking coins not enough"
         );
 
-        // stake at first time to this valiadtor
+        // stake at first time to this validator
         if (staked[staker][validator].coins == 0) {
             // add staker to validator's record list
             staked[staker][validator].index = valInfo.stakers.length;
