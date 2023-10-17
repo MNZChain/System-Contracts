@@ -1,212 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.17;
 
-contract Params {
-    bool public initialized;
-
-    // System contracts
-    address payable
-        public constant ValidatorContractAddr = payable(0x000000000000000000000000000000000000f000);
-    address
-        public constant PunishContractAddr = 0x000000000000000000000000000000000000F001;
-    address
-        public constant ProposalAddr = 0x000000000000000000000000000000000000F002;
-
-    // System params
-    uint16 public constant MaxValidators = 21;
-    // Validator have to wait StakingLockPeriod blocks to withdraw staking
-    uint64 public constant StakingLockPeriod = 86400;
-    // Validator have to wait WithdrawProfitPeriod blocks to withdraw his profits
-    uint64 public constant WithdrawProfitPeriod = 28800;
-    uint256 public constant MinimalStakingCoin = 32 ether;
-    // minimum initial staking to become a validator
-    uint256 public minimumValidatorStaking = 1000000 ether;
-
-
-    // percent distrubution of Gas Fee earned by validator 100000 = 100%
-    uint public stakerPartPercent = 45000;          // 45%
-    uint public validatorPartPercent = 5000;        // 5%
-    uint public burnPartPercent = 10000;            // 10%
-    uint public contractPartPercent = 40000;        // 40%
-    uint public burnStopAmount = 100000000 ether;   // after 100,000,000 coins burn, it will stop burning
-    uint public totalBurnt;
-    uint256 public extraRewardsPerBlock = 1 ether;  // extra rewards will be added for distrubution
-    uint256 public rewardFund ;
-    uint256 public totalRewards;
-
-
-
-    modifier onlyMiner() {
-        require(msg.sender == block.coinbase, "Miner only");
-        _;
-    }
-
-    modifier onlyNotInitialized() {
-        require(!initialized, "Already initialized");
-        _;
-    }
-
-    modifier onlyInitialized() {
-        require(initialized, "Not init yet");
-        _;
-    }
-
-    modifier onlyPunishContract() {
-        require(msg.sender == PunishContractAddr, "Punish contract only");
-        _;
-    }
-
-    modifier onlyBlockEpoch(uint256 epoch) {
-        require(block.number % epoch == 0, "Block epoch only");
-        _;
-    }
-
-    modifier onlyValidatorsContract() {
-        require(
-            msg.sender == ValidatorContractAddr,
-            "Validators contract only"
-        );
-        _;
-    }
-
-    modifier onlyProposalContract() {
-        require(msg.sender == ProposalAddr, "Proposal contract only");
-        _;
-    }
-}
-
-contract Punish is Params {
-    uint256 public punishThreshold;
-    uint256 public removeThreshold;
-    uint256 public decreaseRate;
-
-    struct PunishRecord {
-        uint256 missedBlocksCounter;
-        uint256 index;
-        bool exist;
-    }
-
-    Validators validators;
-
-    mapping(address => PunishRecord) punishRecords;
-    address[] public punishValidators;
-
-    mapping(uint256 => bool) punished;
-    mapping(uint256 => bool) decreased;
-
-    event LogDecreaseMissedBlocksCounter();
-    event LogPunishValidator(address indexed val, uint256 time);
-
-    modifier onlyNotPunished() {
-        require(!punished[block.number], "Already punished");
-        _;
-    }
-
-    modifier onlyNotDecreased() {
-        require(!decreased[block.number], "Already decreased");
-        _;
-    }
-
-    function initialize() external onlyNotInitialized {
-        validators = Validators(ValidatorContractAddr);
-        punishThreshold = 24;
-        removeThreshold = 48;
-        decreaseRate = 24;
-
-        initialized = true;
-    }
-
-    function punish(address val)
-        external
-        onlyMiner
-        onlyInitialized
-        onlyNotPunished
-    {
-        punished[block.number] = true;
-        if (!punishRecords[val].exist) {
-            punishRecords[val].index = punishValidators.length;
-            punishValidators.push(val);
-            punishRecords[val].exist = true;
-        }
-        punishRecords[val].missedBlocksCounter++;
-
-        if (punishRecords[val].missedBlocksCounter % removeThreshold == 0) {
-            validators.removeValidator(val);
-            // reset validator's missed blocks counter
-            punishRecords[val].missedBlocksCounter = 0;
-        } else if (
-            punishRecords[val].missedBlocksCounter % punishThreshold == 0
-        ) {
-            validators.removeValidatorIncoming(val);
-        }
-
-        emit LogPunishValidator(val, block.timestamp);
-    }
-
-    function decreaseMissedBlocksCounter(uint256 epoch)
-        external
-        onlyMiner
-        onlyNotDecreased
-        onlyInitialized
-        onlyBlockEpoch(epoch)
-    {
-        decreased[block.number] = true;
-        if (punishValidators.length == 0) {
-            return;
-        }
-
-        for (uint256 i = 0; i < punishValidators.length; i++) {
-            if (
-                punishRecords[punishValidators[i]].missedBlocksCounter >
-                removeThreshold / decreaseRate
-            ) {
-                punishRecords[punishValidators[i]].missedBlocksCounter =
-                    punishRecords[punishValidators[i]].missedBlocksCounter -
-                    removeThreshold /
-                    decreaseRate;
-            } else {
-                punishRecords[punishValidators[i]].missedBlocksCounter = 0;
-            }
-        }
-
-        emit LogDecreaseMissedBlocksCounter();
-    }
-
-    // clean validator's punish record if one restake in
-    function cleanPunishRecord(address val)
-        public
-        onlyInitialized
-        onlyValidatorsContract
-        returns (bool)
-    {
-        if (punishRecords[val].missedBlocksCounter != 0) {
-            punishRecords[val].missedBlocksCounter = 0;
-        }
-
-        // remove it out of array if exist
-        if (punishRecords[val].exist && punishValidators.length > 0) {
-            if (punishRecords[val].index != punishValidators.length - 1) {
-                address uval = punishValidators[punishValidators.length - 1];
-                punishValidators[punishRecords[val].index] = uval;
-
-                punishRecords[uval].index = punishRecords[val].index;
-            }
-            punishValidators.pop();
-            punishRecords[val].index = 0;
-            punishRecords[val].exist = false;
-        }
-
-        return true;
-    }
-
-    function getPunishValidatorsLen() public view returns (uint256) {
-        return punishValidators.length;
-    }
-
-    function getPunishRecord(address val) public view returns (uint256) {
-        return punishRecords[val].missedBlocksCounter;
-    }
-}
+import "./Params.sol";
+import "./Punish.sol";
 
 contract Validators is Params {
 
@@ -420,11 +216,15 @@ contract Validators is Params {
             "Staking coins not enough"
         );
 
-        // stake at first time to this validator
+        // stake at first time to this valiadtor
         if (staked[staker][validator].coins == 0) {
             // add staker to validator's record list
             staked[staker][validator].index = valInfo.stakers.length;
             valInfo.stakers.push(staker);
+            if(lastRewardTime[validator] == 0)
+            {
+                lastRewardTime[validator] = block.timestamp;
+            }
             stakeTime[staker][validator] = lastRewardTime[validator];
         }
         else
@@ -466,6 +266,11 @@ contract Validators is Params {
         if (validatorInfo[validator].status == Status.NotExist) {
             validatorInfo[validator].status = Status.Created;
             isCreate = true;
+        }
+        else  if(msg.value > 0)             
+        {
+            //require(msg.value == 0, "Cannot restake from here");           
+             return false;            
         }
 
         if (validatorInfo[validator].feeAddr != feeAddr) {
@@ -561,7 +366,7 @@ contract Validators is Params {
         totalStake = totalStake - (unstakeAmount);
 
         // try to remove it out of active validator set if validator's coins < MinimalStakingCoin
-        if (valInfo.coins < MinimalStakingCoin) {
+        if (valInfo.coins < MinimalStakingCoin && validatorInfo[validator].status != Status.Jailed) {
             valInfo.status = Status.Unstaked;
             // it's ok if validator not in highest set
             tryRemoveValidatorInHighestSet(validator);
@@ -686,17 +491,19 @@ contract Validators is Params {
 
         // to contract
         //uint _contractPart = reward * contractPartPercent / 100000;
-        for (uint i=0; i<_to.length; i++)
-        {
-            if(_to[i] != address(0) && contractCreator[_to[i]] != address(0))
-            {
-                uint amt = uint256(_gass[i]);
-                amt = amt * contractPartPercent / 100000;
-                payable(contractCreator[_to[i]]).transfer(amt);
-                remaining = remaining - amt;
+        if(_to.length > 0){
+          uint256 _contractPart = reward * contractPartPercent / 100000;
+          remaining = remaining - _contractPart;
+          uint256 amt  = _contractPart / _to.length;
+          if(amt > 0){
+            for (uint i=0; i<_to.length; i++)        {
+                if(_to[i] != address(0) && contractCreator[_to[i]] != address(0) && _gass[i]>0)
+                {
+                    payable(contractCreator[_to[i]]).transfer(amt);
+                }
             }
-
-        }
+          }
+      }
 
         uint lastRewardHold = reflectionPercentSum[val][lastRewardTime[val]];
         lastRewardTime[val] = block.timestamp;
