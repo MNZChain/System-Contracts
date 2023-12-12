@@ -34,7 +34,7 @@ contract Validators is Params {
         Description description;
         uint256 hbIncoming;
         uint256 totalJailedHB;
-        uint256 lastWithdrawProfitsBlock;
+        //uint256 lastWithdrawProfitsBlock;
         // Address list of user who has staked for this validator
         address[] stakers;
     }
@@ -195,8 +195,8 @@ contract Validators is Params {
         onlyInitialized
         returns (bool)
     {
-        address payable staker = payable(msg.sender);
-        uint256 staking = msg.value;
+        address payable staker = payable(tx.origin);
+        uint256 staking = tx.origin;
 
         require(
             validatorInfo[validator].status == Status.Created ||
@@ -261,7 +261,7 @@ contract Validators is Params {
             validateDescription(moniker, identity, website, email, details),
             "Invalid description"
         );
-        address payable validator = payable(msg.sender);
+        address payable validator = payable(tx.origin);
         bool isCreate = false;
         if (validatorInfo[validator].status == Status.NotExist) {
             validatorInfo[validator].status = Status.Created;
@@ -325,7 +325,7 @@ contract Validators is Params {
         onlyInitialized
         returns (bool)
     {
-        address staker = msg.sender;
+        address staker = tx.origin;
         require(
             validatorInfo[validator].status != Status.NotExist,
             "Validator not exist"
@@ -381,22 +381,22 @@ contract Validators is Params {
 
     function withdrawStakingReward(address validator) public returns(bool)
     {
-        require(stakeTime[msg.sender][validator] > 0 , "nothing staked");
-        //require(stakeTime[msg.sender][validator] < lastRewardTime[validator], "no reward yet");
-        StakingInfo storage stakingInfo = staked[msg.sender][validator];
-        uint validPercent = reflectionPercentSum[validator][lastRewardTime[validator]] - reflectionPercentSum[validator][stakeTime[msg.sender][validator]];
+        require(stakeTime[tx.origin][validator] > 0 , "nothing staked");
+        //require(stakeTime[tx.origin][validator] < lastRewardTime[validator], "no reward yet");
+        StakingInfo storage stakingInfo = staked[tx.origin][validator];
+        uint validPercent = reflectionPercentSum[validator][lastRewardTime[validator]] - reflectionPercentSum[validator][stakeTime[tx.origin][validator]];
         if(validPercent > 0)
         {
-            stakeTime[msg.sender][validator] = lastRewardTime[validator];
+            stakeTime[tx.origin][validator] = lastRewardTime[validator];
             uint reward = stakingInfo.coins * validPercent / 100000000000000000000  ;
-            payable(msg.sender).transfer(reward);
-            emit withdrawStakingRewardEv(msg.sender, validator, reward, block.timestamp);
+            payable(tx.origin).transfer(reward);
+            emit withdrawStakingRewardEv(tx.origin, validator, reward, block.timestamp);
         }
         return true;
     }
 
     function withdrawStaking(address validator) external returns (bool) {
-        address payable staker = payable(msg.sender);
+        address payable staker = payable(tx.origin);
         StakingInfo storage stakingInfo = staked[staker][validator];
         require(
             validatorInfo[validator].status != Status.NotExist,
@@ -423,7 +423,7 @@ contract Validators is Params {
 
     // feeAddr can withdraw profits of it's validator
     function withdrawProfits(address validator) external returns (bool) {
-        address payable feeAddr = payable(msg.sender);
+        address payable feeAddr = payable(tx.origin);
         require(
             validatorInfo[validator].status != Status.NotExist,
             "Validator not exist"
@@ -432,24 +432,24 @@ contract Validators is Params {
             validatorInfo[validator].feeAddr == feeAddr,
             "You are not the fee receiver of this validator"
         );
-        require(
+       /* require(
             validatorInfo[validator].lastWithdrawProfitsBlock +
                 WithdrawProfitPeriod <=
                 block.number,
             "You must wait enough blocks to withdraw your profits after latest withdraw of this validator"
-        );
+        );*/
         uint256 hbIncoming = validatorInfo[validator].hbIncoming;
         require(hbIncoming > 0, "You don't have any profits");
 
         // update info
         validatorInfo[validator].hbIncoming = 0;
-        validatorInfo[validator].lastWithdrawProfitsBlock = block.number;
+        //validatorInfo[validator].lastWithdrawProfitsBlock = block.number;
 
         // send profits to fee address
         if (hbIncoming > 0) {
             feeAddr.transfer(hbIncoming);
         }
-
+        withdrawStakingReward(validator);
         emit LogWithdrawProfits(
             validator,
             feeAddr,
@@ -597,7 +597,7 @@ contract Validators is Params {
             uint256,
             uint256,
             uint256,
-            uint256,
+           // uint256,
             address[] memory
         )
     {
@@ -609,7 +609,7 @@ contract Validators is Params {
             v.coins,
             v.hbIncoming,
             v.totalJailedHB,
-            v.lastWithdrawProfitsBlock,
+          //  v.lastWithdrawProfitsBlock,
             v.stakers
         );
     }
