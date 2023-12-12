@@ -10,7 +10,7 @@ contract Proposal is Params {
 
     // record
     mapping(address => bool) public pass;
-
+    mapping(address => bool) public lastProposalActive;
     struct ProposalInfo {
         // who propose this proposal
         address proposer;
@@ -87,8 +87,8 @@ contract Proposal is Params {
         external
         returns (bool)
     {
-        require(!pass[dst], "Dst already passed, You can start staking"); 
-
+        //require(!pass[dst], "Dst already passed, You can start staking"); 
+        require(!lastProposalActive[dst], "Already active proposal");
         // generate proposal id
         bytes32 id = keccak256(
             abi.encodePacked(msg.sender, dst, details, block.timestamp)
@@ -101,7 +101,7 @@ contract Proposal is Params {
         proposal.dst = dst;
         proposal.details = details;
         proposal.createTime = block.timestamp;
-
+        lastProposalActive[dst] = true;
         proposals[id] = proposal;
         emit LogCreateProposal(id, msg.sender, dst, block.timestamp);
         return true;
@@ -148,6 +148,7 @@ contract Proposal is Params {
 
             // try to reactive validator if it isn't the first time
             validators.tryReactive(proposals[id].dst);
+            lastProposalActive[proposals[id].dst] = false;
             emit LogPassProposal(id, proposals[id].dst, block.timestamp);
 
             return true;
