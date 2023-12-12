@@ -17,7 +17,7 @@ contract Params {
     // Validator have to wait StakingLockPeriod blocks to withdraw staking
     uint64 public constant StakingLockPeriod = 86400;
     // Validator have to wait WithdrawProfitPeriod blocks to withdraw his profits
-    uint64 public constant WithdrawProfitPeriod = 28800;
+   // uint64 public constant WithdrawProfitPeriod = 28800;
     uint256 public constant MinimalStakingCoin = 32 ether;
     // minimum initial staking to become a validator
     uint256 public constant minimumValidatorStaking = 1000000 ether;
