@@ -196,7 +196,7 @@ contract Validators is Params {
         returns (bool)
     {
         address payable staker = payable(tx.origin);
-        uint256 staking = tx.origin;
+        uint256 staking = msg.value;
 
         require(
             validatorInfo[validator].status == Status.Created ||
