@@ -7,7 +7,7 @@ import "./Validators.sol";
 contract Punish is Params {
     uint256 public punishThreshold;
     uint256 public removeThreshold;
-    uint256 public decreaseRate;
+    //uint256 public decreaseRate;
 
     struct PunishRecord {
         uint256 missedBlocksCounter;
@@ -40,7 +40,7 @@ contract Punish is Params {
         validators = Validators(ValidatorContractAddr);
         punishThreshold = 28800;
         removeThreshold = 57600;
-        decreaseRate = 24;
+        //decreaseRate = 24;
 
         initialized = true;
     }
