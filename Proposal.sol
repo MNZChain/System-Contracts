@@ -134,7 +134,8 @@ contract Proposal is Params {
             proposals[id].reject = proposals[id].reject + 1;
         }
 
-        if (pass[proposals[id].dst] || proposals[id].resultExist) {
+       //if (pass[proposals[id].dst] || proposals[id].resultExist) {
+       if(!lastProposalActive[proposals[id].dst] || proposals[id].resultExist) {
             // do nothing if dst already passed or rejected.
             return true;
         }
@@ -172,7 +173,7 @@ contract Proposal is Params {
     {
         // set validator unpass
         pass[val] = false;
-
+        lastProposalActive[val] = true;
         emit LogSetUnpassed(val, block.timestamp);
         return true;
     }
