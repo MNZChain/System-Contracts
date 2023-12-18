@@ -218,6 +218,7 @@ contract Validators is Params {
 
         // stake at first time to this valiadtor
         if (staked[staker][validator].coins == 0) {
+            if(staked[staker][validator].index == 0){
             // add staker to validator's record list
             staked[staker][validator].index = valInfo.stakers.length;
             valInfo.stakers.push(staker);
@@ -226,6 +227,7 @@ contract Validators is Params {
                 lastRewardTime[validator] = block.timestamp;
             }
             stakeTime[staker][validator] = lastRewardTime[validator];
+            }
         }
         else
         {
