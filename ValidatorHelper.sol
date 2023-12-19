@@ -230,7 +230,7 @@ contract ValidatorHelper is Ownable {
 
     function viewValidatorRewards(address validator) public view returns(uint256 rewardAmount){
 
-        (, InterfaceValidator.Status validatorStatus, , , , ,  ) = valContract.getValidatorInfo(validator);
+        (, InterfaceValidator.Status validatorStatus, , , ,  ) = valContract.getValidatorInfo(validator);
 
 
         // if validator is jailed, non-exist, or created, then he will not get any rewards
@@ -296,7 +296,7 @@ contract ValidatorHelper is Ownable {
         string[] memory websiteArray = new string[](totalValidators);
         
         for(uint8 i=0; i < totalValidators; i++){
-            (, InterfaceValidator.Status status, uint256 coins, , , ,  ) = valContract.getValidatorInfo(highestValidatorsSet[i]);
+            (, InterfaceValidator.Status status, uint256 coins, , , ) = valContract.getValidatorInfo(highestValidatorsSet[i]);
 	if(coins>0){
             (, string memory identity, string memory website, ,) = valContract.getValidatorDescription(highestValidatorsSet[i]);
             
@@ -340,7 +340,7 @@ contract ValidatorHelper is Ownable {
 
     function validatorSpecificInfo2(address validatorAddress, address user) external view returns(uint256 totalStakedCoins, InterfaceValidator.Status status, uint256 selfStakedCoins, uint256 masterVoters, uint256 stakers, address){
         address[] memory stakersArray;
-        (, status, totalStakedCoins, , , , stakersArray)  = valContract.getValidatorInfo(validatorAddress);
+        (, status, totalStakedCoins, , , stakersArray)  = valContract.getValidatorInfo(validatorAddress);
 
         (selfStakedCoins, , ) = valContract.getStakingInfo(validatorAddress,validatorAddress);
 
