@@ -50,7 +50,7 @@ interface InterfaceValidator {
         external
         returns (bool);
 
-
+    function withdrawProfits(address validator) external returns (bool);
 }
 
 
@@ -159,14 +159,13 @@ abstract contract Ownable is Context {
  
 
 
-contract ValidatorProxy is Ownable {
+contract ValidatorHelper is Ownable {
 
     InterfaceValidator public valContract = InterfaceValidator(0x000000000000000000000000000000000000f000);
     uint256 public minimumValidatorStaking = 1000000 * 1e18;
     uint256 public lastRewardedBlock = 565367;
-    uint256 public extraRewardsPerBlock = 5 * 1e18;
-    uint256 public rewardFund;
-    uint256 public lastReferenceValueRF = 100000000 * 1e18; // reference to check next half
+    uint256 public extraRewardsPerBlock = 1 * 1e18;
+    uint256 public rewardFund;    
     mapping(address=>uint256) public rewardBalance;
     mapping(address=>uint256) public totalProfitWithdrawn;
     
@@ -223,16 +222,9 @@ contract ValidatorProxy is Ownable {
         require(blockRewards > 0, "Nothing to withdraw");
 
         _distributeRewards();
-
-        // reward halving logic
-        // it will reduce block reward in half, when half of the reward supply reached.
-        // this halving will go on until all the coins in the smart contract is given out.
-        if(rewardFund <= lastReferenceValueRF / 2)
-          {
-            lastReferenceValueRF = lastReferenceValueRF / 2;
-            extraRewardsPerBlock = extraRewardsPerBlock/2;
-          }
-          rewardFund -= blockRewards;
+	valContract.withdrawProfits(validator);
+       
+        rewardFund -= blockRewards;
         
         
         rewardBalance[validator] = 0;
