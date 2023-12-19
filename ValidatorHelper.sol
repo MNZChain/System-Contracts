@@ -157,24 +157,20 @@ abstract contract Ownable is Context {
     }
 }
  
-
-
 contract ValidatorHelper is Ownable {
 
     InterfaceValidator public valContract = InterfaceValidator(0x000000000000000000000000000000000000f000);
     uint256 public minimumValidatorStaking = 1000000 * 1e18;
-    uint256 public lastRewardedBlock = 565367;
+    uint256 public lastRewardedBlock ;
     uint256 public extraRewardsPerBlock = 1 * 1e18;
     uint256 public rewardFund;    
     mapping(address=>uint256) public rewardBalance;
     mapping(address=>uint256) public totalProfitWithdrawn;
     
-
     //events
     event Stake(address validator, uint256 amount, uint256 timestamp);
     event Unstake(address validator, uint256 timestamp);
     event WithdrawProfit(address validator, uint256 amount, uint256 timestamp);
-
     
     receive() external payable {
         rewardFund += msg.value;
@@ -211,9 +207,7 @@ contract ValidatorHelper is Ownable {
         valContract.unstake(validator);
 
         emit Unstake(msg.sender, block.timestamp);
-
         return true;
-
     }
 
     function withdrawStakingReward(address validator) external {
@@ -224,8 +218,7 @@ contract ValidatorHelper is Ownable {
         _distributeRewards();
 	valContract.withdrawProfits(validator);
        
-        rewardFund -= blockRewards;
-        
+        rewardFund -= blockRewards;      
         
         rewardBalance[validator] = 0;
         totalProfitWithdrawn[validator] += blockRewards;
@@ -233,10 +226,7 @@ contract ValidatorHelper is Ownable {
         payable(validator).transfer(blockRewards);
 
         emit WithdrawProfit( validator,  blockRewards,  block.timestamp);
-
-
     }
-
 
     function viewValidatorRewards(address validator) public view returns(uint256 rewardAmount){
 
@@ -262,10 +252,8 @@ contract ValidatorHelper is Ownable {
             }
         }
         
-        return rewardBalance[validator] + rewardAmount;
-        
+        return rewardBalance[validator] + rewardAmount;        
     }
-
 
     function _distributeRewards() internal {
 
@@ -277,12 +265,9 @@ contract ValidatorHelper is Ownable {
             rewardBalance[highestValidatorsSet[i]] = viewValidatorRewards(highestValidatorsSet[i]);
 
         }
-        lastRewardedBlock = block.number;
-        
+        lastRewardedBlock = block.number;        
 
     }
-
-
 
     /**
         admin functions
@@ -294,9 +279,6 @@ contract ValidatorHelper is Ownable {
     function changeMinimumValidatorStaking(uint256 amount) external onlyOwner{
         minimumValidatorStaking = amount;
     }
-
-
-
 
     /**
         View functions
@@ -338,9 +320,6 @@ contract ValidatorHelper is Ownable {
     }
 
 
-
-
-
     function validatorSpecificInfo1(address validatorAddress, address user) external view returns(string memory identityName, string memory website, string memory otherDetails, uint256 withdrawableRewards, uint256 stakedCoins, uint256 waitingBlocksForUnstake ){
         
         (, string memory identity, string memory websiteLocal, ,string memory details) = valContract.getValidatorDescription(validatorAddress);
@@ -353,10 +332,7 @@ contract ValidatorHelper is Ownable {
         if(unstakeBlock!=0){
             waitingBlocksForUnstake = stakedCoins;
             stakedCoins = 0;
-        }
-  
-
-        
+        }        
 
         return(identity, websiteLocal, details, viewValidatorRewards(validatorAddress), stakedCoins, waitingBlocksForUnstake) ;
     }
@@ -406,11 +382,8 @@ contract ValidatorHelper is Ownable {
         }
         
        return 0;
-        
-        
+                
     }
-
-
 
     function minimumStakingAmount() external view returns(uint256){
         return valContract.MinimalStakingCoin();
@@ -424,7 +397,4 @@ contract ValidatorHelper is Ownable {
         //this function is for UI compatibility
         return true;
     }
-
-
-
 } 
