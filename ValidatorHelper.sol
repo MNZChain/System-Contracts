@@ -24,7 +24,7 @@ interface InterfaceValidator {
         string details;
     }
     function getTopValidators() external view returns(address[] memory);
-    function getValidatorInfo(address val)external view returns(address payable, Status, uint256, uint256, uint256, uint256, address[] memory);
+    function getValidatorInfo(address val)external view returns(address payable, Status, uint256, uint256, uint256, address[] memory);
     function getValidatorDescription(address val) external view returns ( string memory,string memory,string memory,string memory,string memory);
     function totalStake() external view returns(uint256);
     function getStakingInfo(address staker, address validator) external view returns(uint256, uint256, uint256);
