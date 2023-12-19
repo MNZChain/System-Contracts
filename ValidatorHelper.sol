@@ -297,7 +297,7 @@ contract ValidatorHelper is Ownable {
         
         for(uint8 i=0; i < totalValidators; i++){
             (, InterfaceValidator.Status status, uint256 coins, , , ) = valContract.getValidatorInfo(highestValidatorsSet[i]);
-	if(coins>0 || totalValidators == 1 ){
+	if(coins>0 ){
             (, string memory identity, string memory website, ,) = valContract.getValidatorDescription(highestValidatorsSet[i]);
             
             statusArray[i] = status;
