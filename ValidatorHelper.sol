@@ -216,7 +216,7 @@ contract ValidatorHelper is Ownable {
         require(blockRewards > 0, "Nothing to withdraw");
 
         _distributeRewards();
-	valContract.withdrawProfits(validator);
+	//valContract.withdrawProfits(validator);
        
         rewardFund -= blockRewards;      
         
