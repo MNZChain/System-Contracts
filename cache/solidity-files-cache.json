@@ -1,0 +1,192 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/media/user/HDD/0_lalji/1_Yogeshbhai_GDO/System_Smart_Contract/system_smart_contract_hardhat/contracts/Proposal.sol": {
+      "lastModificationDate": 1706850707085,
+      "contentHash": "aaca8bb0321f8a9100afa1db98a358e5",
+      "sourceName": "contracts/Proposal.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Params.sol",
+        "./Validators.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "Proposal"
+      ]
+    },
+    "/media/user/HDD/0_lalji/1_Yogeshbhai_GDO/System_Smart_Contract/system_smart_contract_hardhat/contracts/Params.sol": {
+      "lastModificationDate": 1706850693685,
+      "contentHash": "3dd489966719700a25f74ae9df2909db",
+      "sourceName": "contracts/Params.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "Params"
+      ]
+    },
+    "/media/user/HDD/0_lalji/1_Yogeshbhai_GDO/System_Smart_Contract/system_smart_contract_hardhat/contracts/Validators.sol": {
+      "lastModificationDate": 1706850697065,
+      "contentHash": "effedfebbb60dded66885a3a129a193a",
+      "sourceName": "contracts/Validators.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Params.sol",
+        "./Punish.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "Validators"
+      ]
+    },
+    "/media/user/HDD/0_lalji/1_Yogeshbhai_GDO/System_Smart_Contract/system_smart_contract_hardhat/contracts/Punish.sol": {
+      "lastModificationDate": 1706850697061,
+      "contentHash": "29b7e97cd45a8c254c49bba9cfa0bf2f",
+      "sourceName": "contracts/Punish.sol",
+      "solcConfig": {
+        "version": "0.8.17",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Params.sol",
+        "./Validators.sol"
+      ],
+      "versionPragmas": [
+        "0.8.17"
+      ],
+      "artifacts": [
+        "Punish"
+      ]
+    },
+    "/media/user/HDD/0_lalji/1_Yogeshbhai_GDO/System_Smart_Contract/system_smart_contract_hardhat/contracts/ValidatorHelper.sol": {
+      "lastModificationDate": 1706850697065,
+      "contentHash": "9252308f1372c4bd949ee73b46620ceb",
+      "sourceName": "contracts/ValidatorHelper.sol",
+      "solcConfig": {
+        "version": "0.8.19",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.19"
+      ],
+      "artifacts": [
+        "Context",
+        "InterfaceValidator",
+        "Ownable",
+        "ValidatorHelper"
+      ]
+    }
+  }
+}

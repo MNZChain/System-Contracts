@@ -1,0 +1,232 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Params",
+  "sourceName": "contracts/Params.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "MaxValidators",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "MinimalStakingCoin",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ProposalAddr",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "PunishContractAddr",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "StakingLockPeriod",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ValidatorContractAddr",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "burnPartPercent",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "burnStopAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "contractPartPercent",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "extraRewardsPerBlock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "initialized",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "minimumValidatorStaking",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "rewardFund",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "stakerPartPercent",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalBurnt",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalRewards",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "validatorPartPercent",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b50610268806100206000396000f3fe608060405234801561001057600080fd5b506004361061010b5760003560e01c80638ae53dbd116100a2578063c967f90f11610071578063c967f90f146101d9578063cd779d21146101f4578063db78dd28146101fd578063efe2226614610220578063fca737c01461022957600080fd5b80638ae53dbd1461019f578063966ff650146101ae5780639d7714ce146101b7578063be645692146101c957600080fd5b806337dbc8cc116100de57806337dbc8cc1461017b5780633a061bd31461018457806342127ee71461018d5780636233be5d1461019657600080fd5b80630976c65d146101105780630e15561a14610134578063158ef93e1461013d5780631b5e358c1461015a575b600080fd5b61012169d3c21bcecceda100000081565b6040519081526020015b60405180910390f35b61012160035481565b60005461014a9060ff1681565b604051901515815260200161012b565b61016361f00181565b6040516001600160a01b03909116815260200161012b565b61012161271081565b61016361f00081565b61012161138881565b61016361f00281565b610121670de0b6b3a764000081565b61012160015481565b6101216a52b7d2dcc80cd2e400000081565b6101216801bc16d674ec80000081565b6101e1601e81565b60405161ffff909116815260200161012b565b61012161afc881565b6102076201518081565b60405167ffffffffffffffff909116815260200161012b565b61012160025481565b610121619c408156fea2646970667358221220235cf705272e303d1e9d06cc9e469cf15bad3b481253c3735e37d2ebdf9191b364736f6c63430008110033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b506004361061010b5760003560e01c80638ae53dbd116100a2578063c967f90f11610071578063c967f90f146101d9578063cd779d21146101f4578063db78dd28146101fd578063efe2226614610220578063fca737c01461022957600080fd5b80638ae53dbd1461019f578063966ff650146101ae5780639d7714ce146101b7578063be645692146101c957600080fd5b806337dbc8cc116100de57806337dbc8cc1461017b5780633a061bd31461018457806342127ee71461018d5780636233be5d1461019657600080fd5b80630976c65d146101105780630e15561a14610134578063158ef93e1461013d5780631b5e358c1461015a575b600080fd5b61012169d3c21bcecceda100000081565b6040519081526020015b60405180910390f35b61012160035481565b60005461014a9060ff1681565b604051901515815260200161012b565b61016361f00181565b6040516001600160a01b03909116815260200161012b565b61012161271081565b61016361f00081565b61012161138881565b61016361f00281565b610121670de0b6b3a764000081565b61012160015481565b6101216a52b7d2dcc80cd2e400000081565b6101216801bc16d674ec80000081565b6101e1601e81565b60405161ffff909116815260200161012b565b61012161afc881565b6102076201518081565b60405167ffffffffffffffff909116815260200161012b565b61012160025481565b610121619c408156fea2646970667358221220235cf705272e303d1e9d06cc9e469cf15bad3b481253c3735e37d2ebdf9191b364736f6c63430008110033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
