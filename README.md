@@ -4,7 +4,7 @@ This repository hosts system smart contracts of the MainnetZ Chain
 # Consensus
 `MainnetZ` adopts `DPoS` consensus mechanism with low transaction cost, low transaction latency, high transaction concurrency, and supports up to 30 validators.
 
-DPoS allows anyone to become a validator by staking specified coins. It also allows delegators to stake small amounts and to participate in network security.Any address can stake to an address that qualifies to become a validator, and after the validator's staking volume ranks in the top 100, it will become an active validator in the next epoch.
+DPoS allows anyone to become a validator by staking specified coins. It also allows delegators to stake small amounts and to participate in network security.Any address can stake to an address that qualifies to become a validator, and after the validator's staking volume ranks in the top 30, it will become an active validator in the next epoch.
 
 
 All active verifiers are ordered according to predefined rules and take turns to pack out blocks. If a validator fails to pack out a block in time in its own round, the active validators who have not involved  in the past n/2 (n is the number of active validators) blocks will randomly perform the block-out. At least n/2+1 active validators work properly to ensure the proper operation of the blockchain.
